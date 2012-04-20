@@ -60,7 +60,7 @@ Mind v1.0 is a combination of a **Preprocessor**, a **Consciousness**, and a
 Preprocessor v1.0 does nothing now but is in place for processing of inputs
 prior to the passing of them to Mind.
 
-Consciousness v1.0 is a looping processor that does the following:
+Consciousness v1.0 is a processor that does the following:
 
 - Retrieves inputs from Preproccessor or **Short Term Memory**
 - Retrieves from Memory information related to those inputs
