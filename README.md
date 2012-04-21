@@ -26,6 +26,7 @@ basic inputs.
 ### What Intelligence is *not* Trying to Do
 
 - Improve algorithm efficiency organically (Somewhere down the line!)
+- Allow for **Thought**
 
 ### Basic Assumptions Intelligence Makes
 
@@ -74,6 +75,10 @@ Desirability. Memory can look up inputs, store new entires, and modify existing
 entries. If two identical inputs have different actions or results they are both
 stored.
 
+### Thoughts for Future Versions
+
+Is curiousity in some way fundamental? Should Mind always want to find out more
+about something it does not understand?
 
 ### Definitions
 
@@ -86,6 +91,10 @@ source of input.
 
 ##### Earth
 Earth is the world in which Intelligence is tested.
+
+##### Thought
+Thought is the process of creating one idea or thought from an existing thought.
+Mind can only respond to input. Mind cannot react to its own thoughts.
 
 ##### Discomfort
 Discomfort is a collection of all of the inputs deamed unfavorable by body and

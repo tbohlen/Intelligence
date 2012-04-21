@@ -1,5 +1,5 @@
 /*
-World v1.0
+IEarth v1.0
 
 Author: Turner Bohlen<turnerbohlen@gmail.com>(www.turnerbohlen.com)
 Date: April 20th, 2012
@@ -21,6 +21,11 @@ executeStep - executes a single step in the simulation
 dropFood - adds a piece of the food to the map if allowed by
 the parameters. This is registered as a preStepAction.
 changeLocaleContends - implements all the content changes that occured during the turn
+randomLocation - generated a random locale on the map and returns it
+getLocale
+getLocales
+locationsInCircle
+registerContentChange
 */
 
 var I_EARTH_SIZE = 20;
@@ -38,7 +43,7 @@ var IEarth = {
 	, go: false // if true, calls executeStep every 30 milliseconds
 	, totalFood: 0 // the total number of pieces of food on the map
 	, localeContentChanges: [] // array of content changes made during the turn
-	, init: function () { // method to initiate the world
+	, init: function () { // method to initiate the earth
 		for(int i = 0; i < I_EARTH_SIZE; i++) {
 			var column = [];
 			for(int j = 0; j < I_EARTH_SIZE; j++) {
@@ -60,16 +65,16 @@ var IEarth = {
 		else {
 			this.stepNumber++;
 			for(var action in this.preStepActions) {
-				action(this);
+				action();
 			}
 			for(var action in this.inputActions) {
-				action(this);
+				action();
 			}
 			for(var action in this.processActions) {
-				action(this);
+				action();
 			}
 			for(var action in this.postStepActions) {
-				action(this);
+				action();
 			}
 		}
 	}
@@ -92,7 +97,39 @@ var IEarth = {
 	}
 	, changeLocaleContents: function () { // method to implement changes to the contents of locales that occured during the last step
 		for(var change in this.localeContentChanges) {
-			this.earthArray[change.x][change.y].contents = change.contents;
+			this.earthArray[change.loc[0]][change.loc[1]].contents = change.contents;
 		}
+	}
+	, randomLocation: function () { // chooses and returns a random location on earth
+		var x = iRandomInt(0, I_EARTH_SIZE);
+		var y = iRandomInt(0, I_EARTH_SIZE);
+		return [x, y];
+	}
+	, getLocale: function (coordinates) { // returns the locale object at the given earth location
+		if(coordinates[0] > 0 && coordinates[0] < I_EARTH_SIZE && coordinates[1] > 0 && coordinates[1] < I_EARTH_SIZE) {
+			return this.earthArray[coordinates[0]][coordinates[1]]
+		}
+		else {
+			return null
+		}
+	}
+	, getLocales: function(locations) { // returns the locale objects ad the given earth locations
+		var result = [];
+		for(location in locations) {
+			result.push([location, this.getLocale(location)]);
+		}
+		return result;
+	}
+	, locationsInCircle: function(center, radius) { // returns a list of locations within the circle
+		var result = []
+		for(var i = -radius; i < radius+1;i++) {
+			for(var j = -Math.abs(i); j < Math.abs(i); j++) {
+				result.push([i, j]);
+			}
+		}
+		return result;
+	}
+	, registerContentChange: function(loc, newContent) {
+		this.localeContentChanges.push({loc: loc, contents: newContent});
 	}
 };
