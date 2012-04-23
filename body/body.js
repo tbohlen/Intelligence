@@ -90,5 +90,8 @@ IBody.prototype.calculateHunger = function() {
 	return 1 - this.energy/this.maxEnergy;
 }
 IBody.prototype.checkDead = fucntion() {
-    
+    if(this.energy <= 0) {
+        return true;
+    }
+    return false;
 }

@@ -35,6 +35,7 @@ var I_EARTH_MAX_FOOD_DENSITY = 0.05;
 var I_EARTH_ADD_FOOD_PROBABILITY = 0.5;
 
 function IEarth () {
+    this.frameRate = 30; // calculations per second
 	this.preStepActions = []; // array of actions that need to happen before a step
 	this.inputActions = []; // array of actions to gather inputs CANNOT change a board
 	this.processActions = []; // array of actions to process inputs
@@ -46,13 +47,13 @@ function IEarth () {
 }
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.init = function () { // method to initiate the earth
-	this.preStepCalls.push(this.dropFood);
-	this.postStepCalls.push(this.changeLocaleContents);
+	this.preStepActions.push(this.dropFood);
+	this.postStepActions.push(this.changeLocaleContents);
 }
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.start = function () { // method to start the event loop the runs earth
 	this.go = true;
-	this.intervalID = window.setInterval(this.executeStep, 30);
+	this.intervalID = window.setInterval(this.executeStep, 1000/30);
 }
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.executeStep = function () { // method that executes a single step
@@ -61,16 +62,16 @@ IEarth.prototype.executeStep = function () { // method that executes a single st
 	}
 	else {
 		this.stepNumber++;
-		for(var method in this.preStepCalls) {
+		for(var method in this.preStepActions) {
 			method();
 		}
-		for(var method in this.inputCalls) {
+		for(var method in this.inputActions) {
 			method();
 		}
-		for(var call in this.processCalls) {
+		for(var call in this.processActions) {
 			method();
 		}
-		for(var call in this.postStepCalls) {
+		for(var call in this.postStepActions) {
 			method();
 		}
 	}

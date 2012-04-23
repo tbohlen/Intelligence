@@ -9,9 +9,9 @@
 function IBoard () {
     this.array = []; // array of Locales on Earth
     this.sideLength = 20;
-	for(int i = 0; i < this.board.sideLength; i++) {
+	for(var i = 0; i < this.board.sideLength; i++) {
 		var column = [];
-		for(int j = 0; j < this.sideLength; j++) {
+		for(var j = 0; j < this.sideLength; j++) {
 			column.push(new ILocale());
 		}
 		this.array.push(column);
@@ -20,22 +20,22 @@ function IBoard () {
 // method to implement changes to the contents of locales that occured during the last step
 IBoard.prototype.changeLocaleContents = function (loc, newContent) {
 	this.array[loc[0]][loc[1]].contents = newContent;
-}
+};
 // chooses and returns a random location on earth
 IBoard.prototype.randomLocation = function () {
 	var x = iRandomInt(0, this.sideLength);
 	var y = iRandomInt(0, this.sideLength);
 	return [x, y];
-}
+};
 // returns the locale object at the given earth location
 IBoard.prototype.getLocale = function (coordinates) {
 	if(coordinates[0] > 0 && coordinates[0] < this.sideLength && coordinates[1] > 0 && coordinates[1] < this.sideLength) {
-		return this.earthArray[coordinates[0]][coordinates[1]]
+		return this.earthArray[coordinates[0]][coordinates[1]];
 	}
 	else {
 		return null;
 	}
-}
+};
 // returns the locale objects ad the given earth locations
 IBoard.prototype.getLocales = function(locations) {
 	var result = [];
@@ -43,15 +43,14 @@ IBoard.prototype.getLocales = function(locations) {
 		result.push(this.getLocale(location));
 	}
 	return result;
-}
+};
 // returns a list of locations within the circle
 IBoard.prototype.locationsInCircle = function(center, radius) {
-    if(center[0] >= this.sideLength || center[1] >= this.sideLength
-       || center[0] < 0 || center[1] < 0) {
+    if(center[0] >= this.sideLength || center[1] >= this.sideLength || center[0] < 0 || center[1] < 0) {
            return [];
     }
-	var result = []
-	for(var i = -radius; i < radius+1;i++) {
+	var result = [];
+	for(var i = -radius; i < radius+1; i++) {
 		for(var j = -Math.abs(i); j < Math.abs(i); j++) {
             var x = center[0]+i;
             var y = center[1]+j;
@@ -59,7 +58,7 @@ IBoard.prototype.locationsInCircle = function(center, radius) {
 		}
 	}
 	return result;
-}
+};
 IBoard.prototype.wrapCoordinates = function (coordinates) {
     coordinates[0] = coordinates[0]%this.sideLength;
     coordinates[1] = coordinates[1]%this.sideLength;
@@ -70,11 +69,10 @@ IBoard.prototype.wrapCoordinates = function (coordinates) {
 		coordinates[1] += this.sideLength;
 	}
     return coordinates;
-}
+};
 
 IBoard.prototype.addFood = function (coordinates) {
-    if(coordinates[0] >= this.sideLength || coordinates[1] >= this.sideLength
-       || coordinates[0] < 0 || coordinates[1] < 0) {
+    if(coordinates[0] >= this.sideLength || coordinates[1] >= this.sideLength || coordinates[0] < 0 || coordinates[1] < 0) {
            return false;
     }
     var locale = this.array[coordinates[0]][coordinates[0]];
@@ -86,7 +84,7 @@ IBoard.prototype.addFood = function (coordinates) {
     else {
         return false;
     }
-}
+};
 
 
 /**
@@ -101,21 +99,21 @@ IBoard.prototype.addFood = function (coordinates) {
 function INullBoard () {
 }
 INullBoard.prototype.changeLocaleContents = function () {
-}
+};
 INullBoard.prototype.randomLocation = function () {
 	return [0, 0];
-}
+};
 INullBoard.prototype.getLocale = function (coordinates) {
     return new ILocale();
-}
+};
 INullBoard.prototype.getLocales = function(locations) {
     return [new ILocale(), new ILocale()];
-}
+};
 INullBoard.prototype.locationsInCircle = function(center, radius) {
     return [[0, 1], [0, 0], [1, 0]];
-}
+};
 INullBoard.prototype.wrapCoordinates =function(coordinates) {
     return coordinates;
-}
+};
 INullBoard.prototype.addFood = function (coordinates) {
-}
+};
