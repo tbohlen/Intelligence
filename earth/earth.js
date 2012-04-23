@@ -25,14 +25,12 @@ randomLocation - generated a random locale on the map and returns it
 getLocale
 getLocales
 locationsInCircle
-registerContentChange
 registerInputAction
 registerProcessAction
 removeInputAction
 removeProcesAction
 */
 
-var I_EARTH_SIZE = 20;
 var I_EARTH_MAX_FOOD_DENSITY = 0.05;
 var I_EARTH_ADD_FOOD_PROBABILITY = 0.2;
 
@@ -78,18 +76,15 @@ IEarth.prototype.executeStep = function () { // method that executes a single st
 // method that adds food to the map if possible
 // THIS METHOD IS NOT TESTED - I'm not sure how to test it
 IEarth.prototype.dropFood = function () {
-	if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*I_EARTH_SIZE*I_EARTH_SIZE)
+	if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*this.board.sideLength*this.board.sideLength)
        && Math.random() <= I_EARTH_ADD_FOOD_PROBABILITY) {
 		var added = false;
 		while(!added) {
-			var x = iRandomInt(0, I_EARTH_SIZE);
-			var y = iRandomInt(0, I_EARTH_SIZE);
+			var x = iRandomInt(0, this.board.sideLength);
+			var y = iRandomInt(0, this.board.sideLength);
 			added = this.board.addFood([x, y]);
 		}
 	}
-}
-IEarth.prototype.registerContentChange = function(loc, newContent) {
-	this.localeContentChanges.push({loc: loc, contents: newContent});
 }
 IEarth.prototype.registerInputAction = function(method) {
     this.inputActions.push(method);

@@ -63,21 +63,14 @@ IBody.prototype.eat = function() {
 	var locale = this.earth.getLocale(this.loc);
 	if(locale.contents == "food") {
 		this.energy+=I_FOOD_ENERGY;
-		this.earth.registerContentChange(this.loc, null);
+		this.earth.board.changeLocaleContents(this.loc, null);
 	}
 }
 IBody.prototype.move = function(direction) {
 	// move in the direction indicates
 	this.loc[0] += direction[0];
 	this.loc[1] += direction[1];
-    this.loc[0] = this.loc[0]%I_EARTH_SIZE;
-    this.loc[1] = this.loc[1]%I_EARTH_SIZE;
-	if(this.loc[0] < 0) {
-		this.loc[0] += I_EARTH_SIZE;
-	}
-	if(this.loc[1] < 0) {
-		this.loc[1] += I_EARTH_SIZE;
-	}
+    this.loc = this.earth.board.wrapCoordinates(this.loc);
 }
 IBody.prototype.wait = function() {
 	// do nothing
