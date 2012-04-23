@@ -26,110 +26,86 @@ getLocale
 getLocales
 locationsInCircle
 registerContentChange
+registerInputAction
+registerProcessAction
+removeInputAction
+removeProcesAction
 */
 
 var I_EARTH_SIZE = 20;
 var I_EARTH_MAX_FOOD_DENSITY = 0.05;
 var I_EARTH_ADD_FOOD_PROBABILITY = 0.2;
 
-var IEarth = {
-	preStepActions: [] // array of actions that need to happen before a step
-	, inputActions: [] // array of actions to gather inputs CANNOT change board
-	, processActions: [] // array of actions to process inputs
-	, postStepActions: [] // array of actions to happen after the step
-	, earthArray: [] // array of Locales on Earth
-	, stepNumber: 0 // the number of steps that have passed
-	, intervalID: null // the ID of the interval calling executeStep
-	, go: false // if true, calls executeStep every 30 milliseconds
-	, totalFood: 0 // the total number of pieces of food on the map
-	, localeContentChanges: [] // array of content changes made during the turn
-	, init: function () { // method to initiate the earth
-		for(int i = 0; i < I_EARTH_SIZE; i++) {
-			var column = [];
-			for(int j = 0; j < I_EARTH_SIZE; j++) {
-				column.push(new ILocale());
-			}
-			this.earthArray.push(column);
-		}
-		this.preStepActions.push(this.dropFood);
-		this.postStepActions.push(this.changeLocaleContents);
+function IEarth () {
+	this.preStepActions = []; // array of actions that need to happen before a step
+	this.inputActions = []; // array of actions to gather inputs CANNOT change a board
+	this.processActions = []; // array of actions to process inputs
+	this.postStepActions = []; // array of actions to happen after the step
+	this.stepNumber = 0; // the number of steps that have passed
+	this.intervalID = null; // the ID of the interval calling executeStep
+	this.go = false; // if true, calls executeStep every 30 milliseconds
+    this.board = new IBoard();
+}
+IEarth.prototype.init = function () { // method to initiate the earth
+	this.preStepCalls.push(this.dropFood);
+	this.postStepCalls.push(this.changeLocaleContents);
+}
+IEarth.prototype.start = function () { // method to start the event loop the runs earth
+	this.go = true;
+	this.intervalID = window.setInterval(this.executeStep, 30);
+}
+IEarth.prototype.executeStep = function () { // method that executes a single step
+	if(!this.go) {
+		window.clearInterval(this.intervalID);
 	}
-	, start: function () { // method to start the event loop the runs earth
-		this.go = true;
-		this.intervalID = window.setInterval(this.executeStep, 30);
-	}
-	, executeStep: function () { // method that executes a single step
-		if(!this.go) {
-			window.clearInterval(this.intervalID);
+	else {
+		this.stepNumber++;
+		for(var method in this.preStepCalls) {
+			method();
 		}
-		else {
-			this.stepNumber++;
-			for(var action in this.preStepActions) {
-				action();
-			}
-			for(var action in this.inputActions) {
-				action();
-			}
-			for(var action in this.processActions) {
-				action();
-			}
-			for(var action in this.postStepActions) {
-				action();
-			}
+		for(var method in this.inputCalls) {
+			method();
+		}
+		for(var call in this.processCalls) {
+			method();
+		}
+		for(var call in this.postStepCalls) {
+			method();
 		}
 	}
-	, dropFood: function () { // method that adds food to the map if possible
-		if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*I_EARTH_SIZE*I_EARTH_SIZE)) {
-			if(Math.random() <= I_EARTH_ADD_FOOD_PROBABILITY) {
-				var added = false;
-				while(!added) {
-					var x = iRandomInt(0, I_EARTH_SIZE);
-					var y = iRandomInt(0, I_EARTH_SIZE);
-					var locale = this.earthArray[x][y]
-					if(!locale.contents) {
-						locale.contents = "food";
-						this.totalFood++;
-						added = true;
-					}
-				}
-			}
+}
+
+// method that adds food to the map if possible
+// THIS METHOD IS NOT TESTED - I'm not sure how to test it
+IEarth.prototype.dropFood = function () {
+	if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*I_EARTH_SIZE*I_EARTH_SIZE)
+       && Math.random() <= I_EARTH_ADD_FOOD_PROBABILITY) {
+		var added = false;
+		while(!added) {
+			var x = iRandomInt(0, I_EARTH_SIZE);
+			var y = iRandomInt(0, I_EARTH_SIZE);
+			added = this.board.addFood([x, y]);
 		}
 	}
-	, changeLocaleContents: function () { // method to implement changes to the contents of locales that occured during the last step
-		for(var change in this.localeContentChanges) {
-			this.earthArray[change.loc[0]][change.loc[1]].contents = change.contents;
-		}
-	}
-	, randomLocation: function () { // chooses and returns a random location on earth
-		var x = iRandomInt(0, I_EARTH_SIZE);
-		var y = iRandomInt(0, I_EARTH_SIZE);
-		return [x, y];
-	}
-	, getLocale: function (coordinates) { // returns the locale object at the given earth location
-		if(coordinates[0] > 0 && coordinates[0] < I_EARTH_SIZE && coordinates[1] > 0 && coordinates[1] < I_EARTH_SIZE) {
-			return this.earthArray[coordinates[0]][coordinates[1]]
-		}
-		else {
-			return null
-		}
-	}
-	, getLocales: function(locations) { // returns the locale objects ad the given earth locations
-		var result = [];
-		for(location in locations) {
-			result.push([location, this.getLocale(location)]);
-		}
-		return result;
-	}
-	, locationsInCircle: function(center, radius) { // returns a list of locations within the circle
-		var result = []
-		for(var i = -radius; i < radius+1;i++) {
-			for(var j = -Math.abs(i); j < Math.abs(i); j++) {
-				result.push([i, j]);
-			}
-		}
-		return result;
-	}
-	, registerContentChange: function(loc, newContent) {
-		this.localeContentChanges.push({loc: loc, contents: newContent});
-	}
-};
+}
+IEarth.prototype.registerContentChange = function(loc, newContent) {
+	this.localeContentChanges.push({loc: loc, contents: newContent});
+}
+IEarth.prototype.registerInputAction = function(method) {
+    this.inputActions.push(method);
+}
+IEarth.prototype.registerProcessAction = function(method) {
+    this.processActions.push(method);
+}
+IEarth.prototype.removeInputAction = function(method) {
+    var index = this.inputActions.indexOf(method);
+    if(index != -1) {
+        this.inputActions.splice(index, 1);
+    }
+}
+IEarth.prototype.removeProcessAction = function(method) {
+    var index = this.processActions.indexOf(method);
+    if(index != -1) {
+        this.processActions.splice(index, 1);
+    }
+}

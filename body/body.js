@@ -50,6 +50,11 @@ IBody.prototype.act = function(action) {
 	// act
 	this.energy -= this.actions[action].energy;
 	this[action]();
+    if(this.checkDead()) {
+        // if this animal is dead it can be removed from step calls
+        this.earth.removeInputAction(this.gatherInput);
+        this.earth.removeProcessAction(this.provessInput);
+    }
 }
 IBody.prototype.eat = function() {
 	// get the localeObject at our location
@@ -63,8 +68,10 @@ IBody.prototype.eat = function() {
 }
 IBody.prototype.move = function(direction) {
 	// move in the direction indicates
-	this.loc[0] += (direction[0]%I_EARTH_SIZE);
-	this.loc[1] += (direction[1]%I_EARTH_SIZE);
+	this.loc[0] += direction[0];
+	this.loc[1] += direction[1];
+    this.loc[0] = this.loc[0]%I_EARTH_SIZE;
+    this.loc[1] = this.loc[1]%I_EARTH_SIZE;
 	if(this.loc[0] < 0) {
 		this.loc[0] += I_EARTH_SIZE;
 	}
@@ -83,9 +90,12 @@ IBody.prototype.gatherInput = function() {
 	this.nextInput.discomfort = {hunger:this.calculateHunger()};
 }
 IBody.prototype.processInput = function() {
-	var action = this.mind.calculate(this.nextInput, this.actions);
+	var action = this.mind.think(this.nextInput, this.actions.keys());
 	this.act(action);
 }
 IBody.prototype.calculateHunger = function() {
-	return this.energy/this.maxEnergy;
+	return 1 - this.energy/this.maxEnergy;
+}
+IBody.prototype.checkDead = fucntion() {
+    
 }
