@@ -16,7 +16,7 @@ var IBoardTests = {
     }
     , _TEST_boardInit_arrayHeight: function () {
         var board = new IBoard();
-        for(var i = 0; var < board.array.length; i++) {
+        for(var i = 0; i < board.array.length; i++) {
             if(board.array[i].length != board.sideLength) {
                 return false;
             }
@@ -35,10 +35,10 @@ var IBoardTests = {
         if(board.array[0][board.sideLength - 1].contents != "changed2") {
             return false;
         }
-        if(board.array[board.sideLength - 1][0]).contents != "changed3") {
+        if(board.array[board.sideLength - 1][0].contents != "changed3") {
             return false;
         }
-        if(board.array[board.sideLength - 1][board.sideLength - 1]).contents != "changed4") {
+        if(board.array[board.sideLength - 1][board.sideLength - 1].contents != "changed4") {
             return false;
         }
         
@@ -48,7 +48,7 @@ var IBoardTests = {
         var board = new IBoard();
         board.changeLocaleContents([-1, 0], "changed1");
         board.changeLocaleContents([0, -1], "changed2");
-        board.changeLocaleContents(0 , board.sideLength*2], "changed3");
+        board.changeLocaleContents([0 , board.sideLength*2], "changed3");
         board.changeLocaleContents([board.sideLength*2, 0], "changed4");
         board.changeLocaleContents([board.sideLength*2, -10], "changed5");
         if(board.array[-1][0].contents != "changed1") {
@@ -73,7 +73,7 @@ var IBoardTests = {
         var board = new IBoard();
         board.changeLoclaeContents([0, 0], "changed");
         board.changeLoclaeContents([0, 0], null);
-        if(board.array.[0][0].contents != null) {
+        if(board.array[0][0].contents != null) {
             return false;
         }
         return true;
@@ -123,7 +123,7 @@ var IBoardTests = {
         var board = new IBoard();
         board.changeLocaleContents([-1, 0], "changed1");
         board.changeLocaleContents([0, -1], "changed2");
-        board.changeLocaleContents(0 , board.sideLength*2], "changed3");
+        board.changeLocaleContents([0 , board.sideLength*2], "changed3");
         board.changeLocaleContents([board.sideLength*2, 0], "changed4");
         board.changeLocaleContents([board.sideLength*2, -10], "changed5");
         var locale1 = board.getLocale();
@@ -185,19 +185,19 @@ var IBoardTests = {
         var locs3 = board.locationsInCircle([board.sideLength*2, 0], 2);
         var locs4 = board.locationsInCircle([0, board.sideLength*2], 2);
         var locs5 = board.locationsInCircle([-1, board.sideLength*2], 2);
-        if(locs1.length != 0)) {
+        if(locs1.length != 0) {
             return false;
         }
-        if(locs2.length != 0)) {
+        if(locs2.length != 0) {
             return false;
         }
-        if(locs3.length != 0)) {
+        if(locs3.length != 0) {
             return false;
         }
-        if(locs4.length != 0)) {
+        if(locs4.length != 0) {
             return false;
         }
-        if(locs5.length != 0)) {
+        if(locs5.length != 0) {
             return false;
         }
         return true;
@@ -287,13 +287,3 @@ Array.prototype.iCompare = function(testArr) {
 }
 
 ITesting.registerTestSuite(IBoardTests);
- 
-/*
-Things to test:
-
-init creates board with correct dimensions
-
-init registers food
-
-init registers changing spaces
-

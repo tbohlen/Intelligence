@@ -49,12 +49,12 @@ function IEarth () {
 IEarth.prototype.init = function () { // method to initiate the earth
 	this.preStepActions.push(this.dropFood);
 	this.postStepActions.push(this.changeLocaleContents);
-}
+};
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.start = function () { // method to start the event loop the runs earth
 	this.go = true;
 	this.intervalID = window.setInterval(this.executeStep, 1000/30);
-}
+};
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.executeStep = function () { // method that executes a single step
 	if(!this.go) {
@@ -62,51 +62,50 @@ IEarth.prototype.executeStep = function () { // method that executes a single st
 	}
 	else {
 		this.stepNumber++;
-		for(var method in this.preStepActions) {
-			method();
+		for(var preMethod in this.preStepActions) {
+			preMethod();
 		}
-		for(var method in this.inputActions) {
-			method();
+		for(var inputMethod in this.inputActions) {
+			inputMethod();
 		}
-		for(var call in this.processActions) {
-			method();
+		for(var processMethod in this.processActions) {
+			processMethod();
 		}
-		for(var call in this.postStepActions) {
-			method();
+		for(var postMethod in this.postStepActions) {
+			postMethod();
 		}
 	}
-}
+};
 
 // method that adds food to the map if possible
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.dropFood = function () {
-	if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*this.board.sideLength*this.board.sideLength)
-       && Math.random() <= I_EARTH_ADD_FOOD_PROBABILITY) {
+	if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*this.board.sideLength*this.board.sideLength) && Math.random() <= I_EARTH_ADD_FOOD_PROBABILITY) {
 		var added = false;
 		while(!added) {
-			var x = iRandomInt(0, this.board.sideLength);
-			var y = iRandomInt(0, this.board.sideLength);
+			var x = IHelper.iRandomInt(0, this.board.sideLength);
+			var y = IHelper.iRandomInt(0, this.board.sideLength);
 			added = this.board.addFood([x, y]);
 		}
 	}
-}
+};
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.registerInputAction = function(method) {
     this.inputActions.push(method);
-}
+};
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.registerProcessAction = function(method) {
     this.processActions.push(method);
-}
+};
 IEarth.prototype.removeInputAction = function(method) {
     var index = this.inputActions.indexOf(method);
     if(index != -1) {
         this.inputActions.splice(index, 1);
     }
-}
+};
 IEarth.prototype.removeProcessAction = function(method) {
     var index = this.processActions.indexOf(method);
     if(index != -1) {
         this.processActions.splice(index, 1);
     }
-}
+};

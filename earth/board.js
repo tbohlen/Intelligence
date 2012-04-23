@@ -9,7 +9,7 @@
 function IBoard () {
     this.array = []; // array of Locales on Earth
     this.sideLength = 20;
-	for(var i = 0; i < this.board.sideLength; i++) {
+	for(var i = 0; i < this.sideLength; i++) {
 		var column = [];
 		for(var j = 0; j < this.sideLength; j++) {
 			column.push(new ILocale());
@@ -23,8 +23,8 @@ IBoard.prototype.changeLocaleContents = function (loc, newContent) {
 };
 // chooses and returns a random location on earth
 IBoard.prototype.randomLocation = function () {
-	var x = iRandomInt(0, this.sideLength);
-	var y = iRandomInt(0, this.sideLength);
+	var x = IHelper.iRandomInt(0, this.sideLength);
+	var y = IHelper.iRandomInt(0, this.sideLength);
 	return [x, y];
 };
 // returns the locale object at the given earth location

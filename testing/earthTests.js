@@ -7,7 +7,7 @@
  * @classDescription IEarthTests contains all the unit tests for IEarth
  */
 var IEarthTests = {
-    , _TEST_removeInputAction_actionNotStored_dontCrash: function () {
+    _TEST_removeInputAction_actionNotStored_dontCrash: function () {
         var earth = new IEarth(); // not ideal as this creates a board
         earth.board = new INullBoard();
         function doNothing() {
@@ -64,13 +64,3 @@ var IEarthTests = {
 };
 
 ITesting.registerTestSuite(IEarthTests);
- 
-/*
-Things to test:
-
-init creates board with correct dimensions
-
-init registers food
-
-init registers changing spaces
-

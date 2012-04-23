@@ -41,7 +41,7 @@ function IBody(earth) {
 		, wait: {parameters:[], energy:1}}; // the actions that the body can execute
 	this.energy = this.maxEnergy; // the energy that the body has right now
 	this.discomfort = {hunger:0}; // discomfort metrics for body
-	this.loc = this.earth.randomLocation(); // the location of the Body
+	this.loc = this.earth.board.randomLocation(); // the location of the Body
 	this.nextInput = null; // the next input to pass to Mind
 }
 // NOTE TO SELF change this.actions to incorporate parameters
@@ -55,7 +55,7 @@ IBody.prototype.act = function(action) {
         this.earth.removeInputAction(this.gatherInput);
         this.earth.removeProcessAction(this.provessInput);
     }
-}
+};
 IBody.prototype.eat = function() {
 	// get the localeObject at our location
 	// check to make sure there is food there
@@ -65,33 +65,33 @@ IBody.prototype.eat = function() {
 		this.energy+=I_FOOD_ENERGY;
 		this.earth.board.changeLocaleContents(this.loc, null);
 	}
-}
+};
 IBody.prototype.move = function(direction) {
 	// move in the direction indicates
 	this.loc[0] += direction[0];
 	this.loc[1] += direction[1];
     this.loc = this.earth.board.wrapCoordinates(this.loc);
-}
+};
 IBody.prototype.wait = function() {
 	// do nothing
-}
+};
 IBody.prototype.gatherInput = function() {
 	this.nextInput = {};
 	// gather map information
 	this.nextInput.sight = this.earth.getLocales(this.earth.locationsInCircle(this.loc, this.sightRadius));
 	// generate discomfort information
 	this.nextInput.discomfort = {hunger:this.calculateHunger()};
-}
+};
 IBody.prototype.processInput = function() {
 	var action = this.mind.think(this.nextInput, this.actions.keys());
 	this.act(action);
-}
+};
 IBody.prototype.calculateHunger = function() {
 	return 1 - this.energy/this.maxEnergy;
-}
-IBody.prototype.checkDead = fucntion() {
+};
+IBody.prototype.checkDead = function() {
     if(this.energy <= 0) {
         return true;
     }
     return false;
-}
+};

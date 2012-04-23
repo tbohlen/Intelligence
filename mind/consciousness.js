@@ -28,7 +28,6 @@ function IConsciousness () {
  */
 IConsciousness.prototype.chooseAction = function (input, memories, actions) {
 	// if we have never had this input before then choose an action at random
-	if memories.length == 0
 	// if we have seen in before
 	// if we have tried everything, do the most comforting action
 	// if we have tried only a few actions

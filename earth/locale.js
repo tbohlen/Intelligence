@@ -8,6 +8,6 @@ ILocale is a sinlge locale on the IEarth map and is exceedingly simple at the
 moment.
 */
 
-function iLocale() {
+function ILocale() {
 	this.contents = null;
 }
