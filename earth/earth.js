@@ -32,7 +32,7 @@ removeProcesAction
 */
 
 var I_EARTH_MAX_FOOD_DENSITY = 0.05;
-var I_EARTH_ADD_FOOD_PROBABILITY = 0.2;
+var I_EARTH_ADD_FOOD_PROBABILITY = 0.5;
 
 function IEarth () {
 	this.preStepActions = []; // array of actions that need to happen before a step
@@ -44,14 +44,17 @@ function IEarth () {
 	this.go = false; // if true, calls executeStep every 30 milliseconds
     this.board = new IBoard();
 }
+// NO TEST FOR THIS FUNCTION
 IEarth.prototype.init = function () { // method to initiate the earth
 	this.preStepCalls.push(this.dropFood);
 	this.postStepCalls.push(this.changeLocaleContents);
 }
+// NO TEST FOR THIS FUNCTION
 IEarth.prototype.start = function () { // method to start the event loop the runs earth
 	this.go = true;
 	this.intervalID = window.setInterval(this.executeStep, 30);
 }
+// NO TEST FOR THIS FUNCTION
 IEarth.prototype.executeStep = function () { // method that executes a single step
 	if(!this.go) {
 		window.clearInterval(this.intervalID);
@@ -74,7 +77,7 @@ IEarth.prototype.executeStep = function () { // method that executes a single st
 }
 
 // method that adds food to the map if possible
-// THIS METHOD IS NOT TESTED - I'm not sure how to test it
+// NO TEST FOR THIS FUNCTION
 IEarth.prototype.dropFood = function () {
 	if(this.totalFood < (I_EARTH_MAX_FOOD_DENSITY*this.board.sideLength*this.board.sideLength)
        && Math.random() <= I_EARTH_ADD_FOOD_PROBABILITY) {
@@ -86,9 +89,11 @@ IEarth.prototype.dropFood = function () {
 		}
 	}
 }
+// NO TEST FOR THIS FUNCTION
 IEarth.prototype.registerInputAction = function(method) {
     this.inputActions.push(method);
 }
+// NO TEST FOR THIS FUNCTION
 IEarth.prototype.registerProcessAction = function(method) {
     this.processActions.push(method);
 }
