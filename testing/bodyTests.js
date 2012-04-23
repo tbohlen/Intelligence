@@ -7,13 +7,6 @@
  * @classDescription IBodyTests contains all the unit tests for body
  */
 var IBodyTests = {
-    setup: function () {
-         
-    }
-    , teardown: function () {
-         
-    }
-    , _TEST_
 };
 
 ITesting.registerTestSuite(IBodyTests);
