@@ -47,32 +47,33 @@ function IEarth () {
 }
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.init = function () { // method to initiate the earth
-	this.preStepActions.push(this.dropFood);
+	this.preStepActions.push(this.dropFood.bind(this));
 	this.postStepActions.push(this.changeLocaleContents);
 };
 // NO TEST FOR THIS FUNCTION
-IEarth.prototype.start = function () { // method to start the event loop the runs earth
+IEarth.prototype.startSteps = function () { // method to start the event loop the runs earth
 	this.go = true;
-	this.intervalID = window.setInterval(this.executeStep, 1000/30);
+	this.intervalID = window.setInterval(this.executeStep.bind(this), 1000/30);
 };
 // NO TEST FOR THIS FUNCTION
 IEarth.prototype.executeStep = function () { // method that executes a single step
-	if(!this.go) {
+    if(!this.go) {
+        console.log("Executing");
 		window.clearInterval(this.intervalID);
 	}
 	else {
 		this.stepNumber++;
-		for(var preMethod in this.preStepActions) {
-			preMethod();
+		for(var i = 0; i < this.preStepActions.length; i++) {
+			this.preStepActions[i]();
 		}
-		for(var inputMethod in this.inputActions) {
-			inputMethod();
+		for(var i = 0; i < this.inputActions.length; i++) {
+			this.inputActions[i]();
 		}
-		for(var processMethod in this.processActions) {
-			processMethod();
+		for(var i = 0; i < this.processActions.length; i++) {
+			this.processActions[i]();
 		}
-		for(var postMethod in this.postStepActions) {
-			postMethod();
+		for(var i = 0; i < this.postStepActions.length; i++) {
+			this.postStepActions[i]();
 		}
 	}
 };

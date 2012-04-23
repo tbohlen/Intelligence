@@ -62,5 +62,3 @@ var IEarthTests = {
         return true;
     }
 };
-
-ITesting.registerTestSuite(IEarthTests);

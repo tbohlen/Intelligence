@@ -31,18 +31,18 @@ var ITesting = {
     * @return (Array) Returns a boolean indicating success and the name of the method that failed, if any
     */
     , runTests: function () {
-    for(var i = 0; i < this.testSuites.length; i++) {
-        var suite = this.testSuites[i];
-        for(var prop in suite) {
-            if(prop.match(/^_TEST_*/)) {
-                if(!suite[prop]()) {
-                    return prop;
+        var fails = [];
+        for(var i = 0; i < this.testSuites.length; i++) {
+            var suite = this.testSuites[i];
+            for(var prop in suite) {
+                if(prop.match(/^_TEST_*/)) {
+                    if(!suite[prop]()) {
+                        fails.push(prop);
+                    }
                 }
             }
         }
-    }
-        
-    return true;
+        return fails;
     }
     /**
     * @alias ITesting.runTests
@@ -51,6 +51,6 @@ var ITesting = {
     * @return (string) Returns null if no error or the name of the test that failed
     */
     , registerTestSuite: function (suite) {
-    this.testSuites.push(suite);
+        this.testSuites.push(suite);
     }
 };

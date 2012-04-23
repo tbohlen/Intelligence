@@ -8,8 +8,6 @@
  */
 var IBodyTests = {
 };
-
-ITesting.registerTestSuite(IBodyTests);
  
 /*
 Things to test:

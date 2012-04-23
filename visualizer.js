@@ -2,9 +2,9 @@ function IVisualizer(earth) {
     this.earth = earth;
     this.animals = [];
     this.stage = new Kinetic.Stage({
-        container: "canvas",
-        width: earth.board.sideLength*10,
-        height: earth.board.sideLength*10
+        container: "canvas"
+        , width: earth.board.sideLength*10
+        , height: earth.board.sideLength*10
     });
     this.bg = new Kinetic.Layer();
     var bgRect = new Kinetic.Rect({
@@ -31,11 +31,11 @@ IVisualizer.prototype.clearScreen = function () {
 };
 
 IVisualizer.prototype.drawWorld = function () {
-    var layer = new Kinect.Layer();
+    var layer = new Kinetic.Layer();
     for(var i = 0; i < this.earth.board.sideLength; i++) {
         for(var j = 0; j < this.earth.board.sideLength; j++) {
             var color = (this.earth.board.getLocale([i, j]).contents == "food") ? "#AA2222": "#222222";
-            var rect = new Kinect.Rect({
+            var rect = new Kinetic.Rect({
                 x: i*10
                 , y: j*10
                 , width: 10
@@ -51,10 +51,10 @@ IVisualizer.prototype.drawWorld = function () {
 };
 
 IVisualizer.prototype.drawAnimals = function() {
-    var layer = new Kinect.Layer();
+    var layer = new Kinetic.Layer();
     for(var i = 0; i < this.animals.length; i++) {
         var animal = this.animals[i];
-        var rect = new Kinect.Rect({
+        var rect = new Kinetic.Rect({
             x: (animal.loc[0]*10)+2
             , y: (animal.loc[1]*10)+2
             , width: 6
@@ -64,5 +64,5 @@ IVisualizer.prototype.drawAnimals = function() {
         });
         layer.add(rect);
     }
-    this.stage.add(rect);
+    this.stage.add(layer);
 };

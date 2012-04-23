@@ -43,6 +43,8 @@ function IBody(earth) {
 	this.discomfort = {hunger:0}; // discomfort metrics for body
 	this.loc = this.earth.board.randomLocation(); // the location of the Body
 	this.nextInput = null; // the next input to pass to Mind
+    
+    this.mind = new IMind();
 }
 // NOTE TO SELF change this.actions to incorporate parameters
 IBody.prototype.act = function(action) {
@@ -78,12 +80,12 @@ IBody.prototype.wait = function() {
 IBody.prototype.gatherInput = function() {
 	this.nextInput = {};
 	// gather map information
-	this.nextInput.sight = this.earth.getLocales(this.earth.locationsInCircle(this.loc, this.sightRadius));
+	this.nextInput.sight = this.earth.board.getLocales(this.earth.board.locationsInCircle(this.loc, this.sightRadius));
 	// generate discomfort information
 	this.nextInput.discomfort = {hunger:this.calculateHunger()};
 };
 IBody.prototype.processInput = function() {
-	var action = this.mind.think(this.nextInput, this.actions.keys());
+	var action = this.mind.think(this.nextInput, this.actions.keys);
 	this.act(action);
 };
 IBody.prototype.calculateHunger = function() {

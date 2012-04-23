@@ -44,35 +44,10 @@ var IBoardTests = {
         
         return true;
     }
-    , _TEST_boardChangeContents_BadCoords_Ignore: function () {
-        var board = new IBoard();
-        board.changeLocaleContents([-1, 0], "changed1");
-        board.changeLocaleContents([0, -1], "changed2");
-        board.changeLocaleContents([0 , board.sideLength*2], "changed3");
-        board.changeLocaleContents([board.sideLength*2, 0], "changed4");
-        board.changeLocaleContents([board.sideLength*2, -10], "changed5");
-        if(board.array[-1][0].contents != "changed1") {
-            return false;
-        }
-        if(board.array[0][-1].contents != "changed2") {
-            return false;
-        }
-        if(board.array[0][board.sideLength*2].contents != "changed3") {
-            return false;
-        }
-        if(board.array[board.sideLength*2][0].contents != "changed4") {
-            return false;
-        }
-        if(board.array[board.sideLength*2][-10].contents != "changed5") {
-            return false;
-        }
-        return true;
-
-    }
     , _TEST_boardChangeContents_NullContents_Change: function () {
         var board = new IBoard();
-        board.changeLoclaeContents([0, 0], "changed");
-        board.changeLoclaeContents([0, 0], null);
+        board.changeLocaleContents([0, 0], "changed");
+        board.changeLocaleContents([0, 0], null);
         if(board.array[0][0].contents != null) {
             return false;
         }
@@ -81,7 +56,7 @@ var IBoardTests = {
     , _TEST_arrayCompare: function () {
         var a = [0, 1, 3, 2];
         var b = [0, 1, 2, 3];
-        if(a.compare(b)) {
+        if(a.iCompare(b)) {
             return true;
         }
         return false;
@@ -89,7 +64,7 @@ var IBoardTests = {
     , _TEST_arrayCompare_nestedArrays: function () {
         var a = [[3, 2], 0, 1,];
         var b = [0, 1, [2, 3]];
-        if(a.compare(b)) {
+        if(a.iCompare(b)) {
             return true;
         }
         return false;
@@ -126,11 +101,11 @@ var IBoardTests = {
         board.changeLocaleContents([0 , board.sideLength*2], "changed3");
         board.changeLocaleContents([board.sideLength*2, 0], "changed4");
         board.changeLocaleContents([board.sideLength*2, -10], "changed5");
-        var locale1 = board.getLocale();
-        var locale2 = board.getLocale();
-        var locale3 = board.getLocale();
-        var locale4 = board.getLocale();
-        var locale5 = board.getLocale();
+        var locale1 = board.getLocale([-1, 0]);
+        var locale2 = board.getLocale([0, -1]);
+        var locale3 = board.getLocale([0 , board.sideLength*2]);
+        var locale4 = board.getLocale([board.sideLength*2, 0]);
+        var locale5 = board.getLocale([board.sideLength*2, -10]);
                                 
         if(locale1 != null) {
             return false;
@@ -153,8 +128,8 @@ var IBoardTests = {
         var board = new IBoard();
         board.changeLocaleContents([board.sideLength-1, board.sideLength-1], "changed2");
         var locales = board.getLocales([[0, -1], [board.sideLength-1, board.sideLength-1]]);
-                                
-        if(!locales.iCompare([null, board.array[board.sideLength-1,board.sideLength-1]])) {
+        var expected = [null, board.array[board.sideLength-1][board.sideLength-1]];
+        if(!locales.iCompare(expected)) {
             return false;
         }
         return true;
@@ -164,8 +139,9 @@ var IBoardTests = {
         board.changeLocaleContents([0, 0], "changed1");
         board.changeLocaleContents([board.sideLength-1, board.sideLength-1], "changed2");
         var locales = board.getLocales([[0, 0], [board.sideLength-1, board.sideLength-1]]);
+        var expected = [board.array[0][0], board.array[board.sideLength-1][board.sideLength-1]];
                                 
-        if(!locales.iCompare([board.array[0][0], board.array[board.sideLength-1,board.sideLength-1]])) {
+        if(!locales.iCompare(expected)) {
             return false;
         }
         return true;
@@ -206,7 +182,7 @@ var IBoardTests = {
     , _TEST_boardLocationsInCircle_goodPoint_returnList: function () {
         var board = new IBoard();
         var locs1 = board.locationsInCircle([2,2], 2);
-        var expeced = [[2, 2], [2, 3], [2, 4], [2, 1], [2, 0], [3, 2], [4, 3]
+        var expected = [[2, 2], [2, 3], [2, 4], [2, 1], [2, 0], [3, 2], [4, 2]
                        , [1, 2], [0, 2], [3, 3], [1, 1], [1, 3], [3, 1]];
         if(!locs1.iCompare(expected)) {
             return false;
@@ -216,7 +192,7 @@ var IBoardTests = {
     , _TEST_boardWrapCoordinates_negativeY: function () {
         var board = new IBoard();
         var newCoords = board.wrapCoordinates([0, -1]);
-        if(newCoords != [0, board.sideLength-1]) {
+        if(newCoords[1] != board.sideLength-1) {
             return false;
         }
         return true;
@@ -224,7 +200,7 @@ var IBoardTests = {
     , _TEST_boardWrapCoordinates_negativeX: function () {
         var board = new IBoard();
         var newCoords = board.wrapCoordinates([-1, 0]);
-        if(newCoords != [board.sideLength-1, 0]) {
+        if(newCoords[0] != board.sideLength-1) {
             return false;
         }
         return true;
@@ -232,7 +208,7 @@ var IBoardTests = {
     , _TEST_boardWrapCoordinates_largeY: function () {
         var board = new IBoard();
         var newCoords = board.wrapCoordinates([0, board.sideLength + 10]);
-        if(newCoords != [0, 10]) {
+        if(newCoords[1] != 10) {
             return false;
         }
         return true;
@@ -240,7 +216,7 @@ var IBoardTests = {
     , _TEST_boardWrapCoordinates_largeX: function () {
         var board = new IBoard();
         var newCoords = board.wrapCoordinates([board.sideLength + 10, 0]);
-        if(newCoords != [10, 0]) {
+        if(newCoords[0] != 10) {
             return false;
         }
         return true;
@@ -253,9 +229,9 @@ var IBoardTests = {
         return true;
     }
     , _TEST_boardAddFood_alreadyThere_false: function () {
-        var baord = new IBoard();
-        board.changeLocaleContent([0,0], "food");
-        if(baord.addFood([0,0])) {
+        var board = new IBoard();
+        board.changeLocaleContents([0,0], "food");
+        if(board.addFood([0,0])) {
             return false;
         }
         return true;
@@ -270,20 +246,20 @@ var IBoardTests = {
 };
 
 Array.prototype.iCompare = function(testArr) {
-    if (this.length != testArr.length) {
+    var newThis = this.sort();
+    var newTestArr = testArr.sort();
+    if (newThis.length != newTestArr.length) {
         return false;
     }
-    for (var i = 0; i < testArr.length; i++) {
-        if (this[i].iCompare) { 
-            if (!this[i].iCompare(testArr[i])) {
+    for (var i = 0; i < newTestArr.length; i++) {
+        if (newThis[i] && newThis[i].iCompare) { 
+            if (!newThis[i].iCompare(newTestArr[i])) {
                 return false;
             }
         }
-        if (this[i] !== testArr[i]) {
+        else if (newThis[i] !== newTestArr[i]) {
             return false;
         }
     }
     return true;
-}
-
-ITesting.registerTestSuite(IBoardTests);
+};

@@ -19,7 +19,9 @@ function IBoard () {
 }
 // method to implement changes to the contents of locales that occured during the last step
 IBoard.prototype.changeLocaleContents = function (loc, newContent) {
-	this.array[loc[0]][loc[1]].contents = newContent;
+	if(loc[0] >= 0 && loc[0] < this.sideLength && loc[1] >= 0 && loc[1] < this.sideLength) {
+    	this.array[loc[0]][loc[1]].contents = newContent;
+    }
 };
 // chooses and returns a random location on earth
 IBoard.prototype.randomLocation = function () {
@@ -29,8 +31,8 @@ IBoard.prototype.randomLocation = function () {
 };
 // returns the locale object at the given earth location
 IBoard.prototype.getLocale = function (coordinates) {
-	if(coordinates[0] > 0 && coordinates[0] < this.sideLength && coordinates[1] > 0 && coordinates[1] < this.sideLength) {
-		return this.earthArray[coordinates[0]][coordinates[1]];
+	if(coordinates[0] >= 0 && coordinates[0] < this.sideLength && coordinates[1] >= 0 && coordinates[1] < this.sideLength) {
+		return this.array[coordinates[0]][coordinates[1]];
 	}
 	else {
 		return null;
@@ -39,19 +41,22 @@ IBoard.prototype.getLocale = function (coordinates) {
 // returns the locale objects ad the given earth locations
 IBoard.prototype.getLocales = function(locations) {
 	var result = [];
-	for(location in locations) {
-		result.push(this.getLocale(location));
+	for(var i = 0; i < locations.length; i++) {
+		result.push(this.getLocale(locations[i]));
 	}
 	return result;
 };
 // returns a list of locations within the circle
 IBoard.prototype.locationsInCircle = function(center, radius) {
     if(center[0] >= this.sideLength || center[1] >= this.sideLength || center[0] < 0 || center[1] < 0) {
-           return [];
+       return [];
+    }
+    if(radius == 0) {
+        return [center];
     }
 	var result = [];
 	for(var i = -radius; i < radius+1; i++) {
-		for(var j = -Math.abs(i); j < Math.abs(i); j++) {
+		for(var j = -radius+Math.abs(i); j < radius+1-Math.abs(i); j++) {
             var x = center[0]+i;
             var y = center[1]+j;
 			result.push(this.wrapCoordinates([x, y]));

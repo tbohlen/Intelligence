@@ -21,9 +21,9 @@ think - calculates an action based on an input
 */
 
 function IMind() {
-	this.preprocessor = new Preprocessor();
-	this.consciousness = new Consciousness();
-	this.memory = new Memory();
+	this.preprocessor = new IPreprocessor();
+	this.consciousness = new IConsciousness();
+	this.memory = new IMemory();
 }
 
 IMind.prototype.think = function (input, actions) {
