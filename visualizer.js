@@ -36,10 +36,10 @@ IVisualizer.prototype.drawWorld = function () {
         for(var j = 0; j < this.earth.board.sideLength; j++) {
             var color = (this.earth.board.getLocale([i, j]).contents == "food") ? "#AA2222": "#222222";
             var rect = new Kinetic.Rect({
-                x: i*10
-                , y: j*10
-                , width: 10
-                , height: 10
+                x: i*20
+                , y: j*20
+                , width: 20
+                , height: 20
                 , fill: color
                 , stroke: "#000000"
                 , strokeWidth: 1
@@ -55,10 +55,10 @@ IVisualizer.prototype.drawAnimals = function() {
     for(var i = 0; i < this.animals.length; i++) {
         var animal = this.animals[i];
         var rect = new Kinetic.Rect({
-            x: (animal.loc[0]*10)+2
-            , y: (animal.loc[1]*10)+2
-            , width: 6
-            , height: 6
+            x: (animal.loc[0]*20)+4
+            , y: (animal.loc[1]*20)+4
+            , width: 12
+            , height: 12
             , fill: "#2222AA"
             , strokeWidth: 0
         });
